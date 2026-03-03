@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import axios from 'axios';
+import api, { validateProductsResponse, validateCategoriesResponse } from '../services/api';
 import Layout from '../components/common/Layout';
 import HeroSlider from '../components/home/HeroSlider';
 import ProductCard from '../components/home/ProductCard';
@@ -21,10 +21,11 @@ const Home: React.FC = () => {
 
   const fetchCategories = useCallback(async () => {
     try {
-      const response = await axios.get('/api/categories');
-      if (response.data && response.data.length > 0) {
-        setCategories(response.data);
-        localStorage.setItem('cached_categories', JSON.stringify(response.data));
+      const response = await api.get('/api/categories');
+      const validatedData = validateCategoriesResponse(response.data);
+      if (validatedData.length > 0) {
+        setCategories(validatedData);
+        localStorage.setItem('cached_categories', JSON.stringify(validatedData));
       }
     } catch (err) {
       console.error('Error fetching categories:', err);
@@ -41,10 +42,10 @@ const Home: React.FC = () => {
       setError(null);
       console.log('Home: Fetching products for branch:', selectedBranch?._id);
       const params = selectedBranch ? { params: { branchId: selectedBranch._id } } : {};
-      const response = await axios.get('/api/products', params);
-      const fetchedProducts = response.data.products || response.data;
+      const response = await api.get('/api/products', params);
+      const fetchedProducts = validateProductsResponse(response.data);
 
-      if (fetchedProducts && fetchedProducts.length > 0) {
+      if (fetchedProducts.length > 0) {
         setProducts(fetchedProducts);
         // Persist to local storage
         localStorage.setItem(`cached_products_${selectedBranch?._id || 'all'}`, JSON.stringify(fetchedProducts));
@@ -59,11 +60,15 @@ const Home: React.FC = () => {
       // Ensure we don't show "No products found" error if we have cached data
       const cached = localStorage.getItem(`cached_products_${selectedBranch?._id || 'all'}`);
       if (cached) {
-        const parsed = JSON.parse(cached);
-        if (parsed.length > 0) {
-          setProducts(parsed);
-          setError('Offline Mode: Showing previously loaded products');
-        } else {
+        try {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setProducts(parsed);
+            setError('Offline Mode: Showing previously loaded products');
+          } else {
+            setError('Network Error: Please check your connection');
+          }
+        } catch (e) {
           setError('Network Error: Please check your connection');
         }
       } else {

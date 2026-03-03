@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import axios from 'axios';
+import api from '../services/api';
 
 interface User {
     id: string;
@@ -20,9 +20,6 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Configure axios for credentials
-axios.defaults.withCredentials = true;
-
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -30,7 +27,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     const checkAuth = async () => {
         try {
-            const res = await axios.get('/api/auth/status');
+            const res = await api.get('/api/auth/status');
             if (res.data.isAuthenticated) {
                 setUser(res.data.user);
                 setIsAuthenticated(true);
@@ -52,7 +49,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     const login = async (phone: string, countryCode: string, otp: string, guestCart: any[], guestWishlist: any[]) => {
         try {
-            const res = await axios.post('/api/auth/verify-otp', {
+            const res = await api.post('/api/auth/verify-otp', {
                 phone,
                 countryCode,
                 otp,
@@ -72,7 +69,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     const logout = async () => {
         try {
-            await axios.post('/api/auth/logout');
+            await api.post('/api/auth/logout');
             setUser(null);
             setIsAuthenticated(false);
             window.location.href = '/';
@@ -83,7 +80,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     const updateProfile = async (firstName: string) => {
         try {
-            const res = await axios.post('/api/auth/update-profile', { firstName });
+            const res = await api.post('/api/auth/update-profile', { firstName });
             if (res.data.success) {
                 setUser(res.data.user);
             }

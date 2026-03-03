@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import axios from 'axios';
+import api from '../services/api';
 
 export interface Branch {
     _id: string;
@@ -28,7 +28,7 @@ export const BranchProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     const fetchBranches = async () => {
         try {
             setIsLoading(true);
-            const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/branches`);
+            const response = await api.get('/api/branches');
             const data = response.data;
             setBranches(data);
             localStorage.setItem('cached_branches', JSON.stringify(data));

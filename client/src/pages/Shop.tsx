@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { useLocation } from 'react-router-dom';
-import axios from 'axios';
+import api, { validateProductsResponse, validateCategoriesResponse } from '../services/api';
 import Layout from '../components/common/Layout';
 import ProductCard from '../components/home/ProductCard';
 import { useBranch } from '../contexts/BranchContext';
@@ -47,14 +47,18 @@ const Shop: React.FC = () => {
         const fetchData = async () => {
             try {
                 const [categoriesRes, brandsRes] = await Promise.all([
-                    axios.get('/api/categories'),
-                    axios.get('/api/brands')
+                    api.get('/api/categories'),
+                    api.get('/api/brands')
                 ]);
 
-                setRawCategories(categoriesRes.data);
-                const catNames = categoriesRes.data.map((c: any) => c.name.en);
+                const validatedCategories = validateCategoriesResponse(categoriesRes.data);
+                setRawCategories(validatedCategories);
+                const catNames = validatedCategories.map((c: any) => c.name.en);
                 setCategories(['All', 'Best Selling', ...catNames]);
-                setBrands(brandsRes.data);
+
+                if (Array.isArray(brandsRes.data)) {
+                    setBrands(brandsRes.data);
+                }
             } catch (err) {
                 console.error('Error fetching data:', err);
                 // Fallback categories
@@ -70,7 +74,7 @@ const Shop: React.FC = () => {
         setError(null);
         try {
             const currentPage = isLoadMore ? page + 1 : 1;
-            const response = await axios.post('/api/products/search', {
+            const response = await api.post('/api/products/search', {
                 search: searchQuery || 'NOTHING',
                 category: selectedCategory,
                 brand: selectedBrand || 'NOTHING',
@@ -80,12 +84,12 @@ const Shop: React.FC = () => {
                 limit: 12
             });
 
-            const newProducts = response.data.products || [];
+            const validatedProducts = validateProductsResponse(response.data);
             if (isLoadMore) {
-                setProducts(prev => [...prev, ...newProducts]);
+                setProducts(prev => [...prev, ...validatedProducts]);
                 setPage(currentPage);
             } else {
-                setProducts(newProducts);
+                setProducts(validatedProducts);
                 setPage(1);
             }
             setTotalProducts(response.data.totalProducts || 0);
