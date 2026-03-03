@@ -345,7 +345,7 @@ const Shop: React.FC = () => {
                                     <img
                                         src={brand.logo.startsWith('http')
                                             ? brand.logo
-                                            : `http://localhost:5000/${brand.logo.startsWith('/') ? brand.logo.substring(1) : brand.logo}`}
+                                            : `${import.meta.env.VITE_API_URL}/${brand.logo.startsWith('/') ? brand.logo.substring(1) : brand.logo}`}
                                         alt={brand.name[language] || brand.name.en}
                                         className="w-12 h-12 object-contain mb-3 bg-white p-2 rounded-full shadow-sm"
                                         onError={(e) => {

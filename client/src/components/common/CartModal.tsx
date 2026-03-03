@@ -27,7 +27,7 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose }) => {
     if (!isOpen) return null;
 
     const getImageUrl = (image: string) =>
-        image?.startsWith('http') ? image : `http://localhost:5000/${image?.startsWith('/') ? image.substring(1) : image}`;
+        image?.startsWith('http') ? image : `${import.meta.env.VITE_API_URL}/${image?.startsWith('/') ? image.substring(1) : image}`;
 
     return createPortal(
         <div

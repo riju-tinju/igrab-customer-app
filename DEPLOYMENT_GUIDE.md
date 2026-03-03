@@ -53,9 +53,9 @@ The client is a React application built with Vite. It must be built into static 
    ```
 
 3. **Configure Environment Variables**:
-   Ensure `client/.env` has the correct production API URL:
+   Ensure `client/.env` has the correct production API URL. This variable is used throughout the app to connect to the backend:
    ```env
-   VITE_API_URL=https://api.yourdomain.com  # Or your server IP
+   VITE_API_URL=https://api.yourdomain.com  # The public URL of your Node.js server
    VITE_GOOGLE_MAPS_API_KEY=...
    ```
 

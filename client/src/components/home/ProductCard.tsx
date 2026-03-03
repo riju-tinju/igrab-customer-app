@@ -31,7 +31,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
     const { toggleWishlist, isWishlisted } = useWishlist();
     const { t, isRTL } = useLanguage();
 
-    const imageUrl = image?.startsWith('http') ? image : `http://localhost:5000/${image?.startsWith('/') ? image.substring(1) : image}`;
+    const imageUrl = image?.startsWith('http') ? image : `${import.meta.env.VITE_API_URL}/${image?.startsWith('/') ? image.substring(1) : image}`;
     const wishlisted = isWishlisted(id);
     const inCart = isInCart(id);
     const { language } = useLanguage();

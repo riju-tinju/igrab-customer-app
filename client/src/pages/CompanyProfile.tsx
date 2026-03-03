@@ -211,7 +211,7 @@ const CompanyProfile: React.FC = () => {
                                             <div className="w-full grow relative overflow-hidden rounded-2xl mb-2 flex items-center justify-center">
                                                 {brand.logo ? (
                                                     <img
-                                                        src={brand.logo.startsWith('http') ? brand.logo : `http://localhost:5000/${brand.logo}`}
+                                                        src={brand.logo.startsWith('http') ? brand.logo : `${import.meta.env.VITE_API_URL}/${brand.logo}`}
                                                         alt={language === 'ar' ? brand.name.ar : brand.name.en}
                                                         className="w-full h-full object-contain p-2 transition-transform duration-500 group-hover:scale-110"
                                                         onError={(e) => {

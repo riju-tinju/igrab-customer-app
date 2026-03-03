@@ -28,7 +28,7 @@ export const BranchProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     const fetchBranches = async () => {
         try {
             setIsLoading(true);
-            const response = await axios.get('http://localhost:5000/api/branches');
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/branches`);
             const data = response.data;
             setBranches(data);
             localStorage.setItem('cached_branches', JSON.stringify(data));
