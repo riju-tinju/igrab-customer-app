@@ -55,7 +55,7 @@ The client is a React application built with Vite. It must be built into static 
 3. **Configure Environment Variables**:
    Ensure `client/.env` has the correct production API URL. This variable is used throughout the app to connect to the backend:
    ```env
-   VITE_API_URL=https://api.yourdomain.com  # The public URL of your Node.js server
+   VITE_API_URL=https://shop.igrabstorycafe.com  # Use your public HTTPS domain
    VITE_GOOGLE_MAPS_API_KEY=...
    ```
 
@@ -65,12 +65,35 @@ The client is a React application built with Vite. It must be built into static 
    ```
    This creates a `dist/` folder containing the optimized static website.
 
-5. **Serve the Static Files**:
-   You can use **Nginx** (recommended) or a simple static server like `serve`:
-   ```bash
-   # Option A: Simple serve (using PM2)
-   npm install -g serve
-   pm2 serve dist 5173 --name "igrab-frontend" --spa
+5. **Serve with Nginx (Recommended)**:
+   Update your Nginx site configuration (e.g., `/etc/nginx/sites-available/shop.igrabstorycafe.com`):
+
+   ```nginx
+   server {
+       # ... your server_name and SSL config ...
+
+       # 1. Serve Frontend Static Files
+       location / {
+           root /var/www/shop.igrabstorycafe.com;
+           index index.html;
+           try_files $uri $uri/ /index.html;
+       }
+
+       # 2. Proxy API Requests (IMPORTANT: No trailing slash on proxy_pass)
+       location /api {
+           proxy_pass http://localhost:5000;
+           proxy_http_version 1.1;
+           proxy_set_header Upgrade $http_upgrade;
+           proxy_set_header Connection 'upgrade';
+           proxy_set_header Host $host;
+           proxy_cache_bypass $http_upgrade;
+       }
+
+       # 3. Proxy Uploads
+       location /uploads {
+           proxy_pass http://localhost:5000/uploads;
+       }
+   }
    ```
 
 ---
