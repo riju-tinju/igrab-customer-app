@@ -469,7 +469,7 @@ const Checkout: React.FC = () => {
                 initialCenter={formData.latitude ? { lat: formData.latitude, lng: formData.longitude } : undefined}
                 allowedEmirates={summaryInfo.allowedEmirates}
             />
-        </Layout >
+        </Layout>
     );
 };
 
