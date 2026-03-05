@@ -70,6 +70,9 @@ const App: React.FC = () => {
                     <Route exact path="/company-profile">
                       <CompanyProfile />
                     </Route>
+                    <Route exact path="/brands">
+                      <CompanyProfile />
+                    </Route>
                     <Route>
                       <NotFound />
                     </Route>

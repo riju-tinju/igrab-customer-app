@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { IonSkeletonText } from '@ionic/react';
-import axios from 'axios';
+import api from '../services/api';
 import Layout from '../components/common/Layout';
 import CartModal from '../components/common/CartModal';
 import WishlistModal from '../components/common/WishlistModal';
@@ -34,7 +34,7 @@ const ProductDetails: React.FC = () => {
     const fetchProduct = useCallback(async () => {
         try {
             setLoading(true);
-            const response = await axios.get(`/api/products/${slug}`);
+            const response = await api.get(`/api/products/${slug}`);
             const data = response.data;
             setProduct(data);
             setError(null);

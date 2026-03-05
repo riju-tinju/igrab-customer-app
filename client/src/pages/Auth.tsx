@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
-import axios from 'axios';
+import api from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
 import { useCart } from '../contexts/CartContext';
 import { useWishlist } from '../contexts/WishlistContext';
@@ -78,7 +78,7 @@ const Auth: React.FC = () => {
         setError('');
 
         try {
-            await axios.post('/api/auth/signup', {
+            await api.post('/api/auth/signup', {
                 ...form,
                 authMode
             });

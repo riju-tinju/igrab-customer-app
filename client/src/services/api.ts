@@ -24,4 +24,11 @@ export const validateCategoriesResponse = (data: any): any[] => {
     return [];
 };
 
+// Helper to ensure we always get an array of brands
+export const validateBrandsResponse = (data: any): any[] => {
+    if (Array.isArray(data)) return data;
+    if (data && Array.isArray(data.brands)) return data.brands;
+    return [];
+};
+
 export default api;

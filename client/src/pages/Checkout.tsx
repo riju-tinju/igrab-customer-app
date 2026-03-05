@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import axios from 'axios';
+import api from '../services/api';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { useCart } from '../contexts/CartContext';
@@ -21,7 +21,7 @@ const StripeForm = ({ totalAmount, orderId, onSuccess, onError }: any) => {
 
         setLoading(true);
         try {
-            const { data } = await axios.post('/api/orders/stripe-intent', { totalAmount, orderId });
+            const { data } = await api.post('/api/orders/stripe-intent', { totalAmount, orderId });
             const result = await stripe.confirmCardPayment(data.clientSecret, {
                 payment_method: {
                     card: elements.getElement(CardElement)!,
@@ -112,7 +112,7 @@ const Checkout: React.FC = () => {
     useEffect(() => {
         const fetchConfig = async () => {
             try {
-                const { data } = await axios.get('/api/orders/config/payment');
+                const { data } = await api.get('/api/orders/config/payment');
                 if (data.stripe?.isEnabled && data.stripe.publishableKey) {
                     setStripePromise(loadStripe(data.stripe.publishableKey));
                 }
@@ -123,7 +123,7 @@ const Checkout: React.FC = () => {
 
         const fetchSummaryInfo = async () => {
             try {
-                const { data } = await axios.get('/api/orders/summary-info');
+                const { data } = await api.get('/api/orders/summary-info');
                 setSummaryInfo(data);
             } catch (err) {
                 console.error("Failed to load summary info", err);
@@ -137,7 +137,7 @@ const Checkout: React.FC = () => {
     const calculateDeliveryCharge = useCallback(async (lat: number, lng: number, city: string) => {
         if (!selectedBranch) return;
         try {
-            const { data } = await axios.post('/api/orders/delivery-charge', {
+            const { data } = await api.post('/api/orders/delivery-charge', {
                 latitude: lat,
                 longitude: lng,
                 emirate: city,
@@ -200,7 +200,7 @@ const Checkout: React.FC = () => {
                 storeId: selectedBranch?._id
             };
 
-            const { data: savedOrder } = await axios.post('/api/orders', orderPayload);
+            const { data: savedOrder } = await api.post('/api/orders', orderPayload);
 
             if (formData.paymentMethod === 'COD') {
                 setOrderStatus('success');

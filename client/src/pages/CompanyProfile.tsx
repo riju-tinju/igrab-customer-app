@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { IonPage, IonContent, IonSpinner } from '@ionic/react';
-import axios from 'axios';
+import api, { validateBrandsResponse } from '../services/api';
 import Layout from '../components/common/Layout';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -25,10 +25,12 @@ const CompanyProfile: React.FC = () => {
     useEffect(() => {
         const fetchBrands = async () => {
             try {
-                const response = await axios.get('/api/brands');
-                setBrands(response.data);
+                const response = await api.get('/api/brands');
+                const validatedData = validateBrandsResponse(response.data);
+                setBrands(validatedData);
             } catch (error) {
                 console.error('Error fetching brands:', error);
+                setBrands([]);
             } finally {
                 setLoading(false);
             }
@@ -205,14 +207,14 @@ const CompanyProfile: React.FC = () => {
                                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
                                     {brands.map((brand) => (
                                         <div
-                                            key={brand._id}
+                                            key={brand?._id}
                                             className="bg-white rounded-[2rem] p-6 shadow-xl shadow-primary/5 border border-gray-50 flex flex-col items-center justify-center aspect-square transition-all hover:shadow-2xl hover:scale-105 group"
                                         >
                                             <div className="w-full grow relative overflow-hidden rounded-2xl mb-2 flex items-center justify-center">
-                                                {brand.logo ? (
+                                                {brand?.logo ? (
                                                     <img
                                                         src={brand.logo.startsWith('http') ? brand.logo : `${import.meta.env.VITE_API_URL}/${brand.logo}`}
-                                                        alt={language === 'ar' ? brand.name.ar : brand.name.en}
+                                                        alt={language === 'ar' ? brand.name?.ar : brand.name?.en}
                                                         className="w-full h-full object-contain p-2 transition-transform duration-500 group-hover:scale-110"
                                                         onError={(e) => {
                                                             (e.target as any).src = 'https://via.placeholder.com/150?text=Brand';
@@ -220,12 +222,12 @@ const CompanyProfile: React.FC = () => {
                                                     />
                                                 ) : (
                                                     <div className="w-full h-full flex items-center justify-center text-gray-300 font-bold bg-muted rounded-2xl text-2xl">
-                                                        {(language === 'ar' ? brand.name.ar : brand.name.en).charAt(0)}
+                                                        {(language === 'ar' ? brand?.name?.ar : brand?.name?.en)?.charAt(0) || 'B'}
                                                     </div>
                                                 )}
                                             </div>
                                             <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 text-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                                {language === 'ar' ? brand.name.ar : brand.name.en}
+                                                {language === 'ar' ? brand?.name?.ar : brand?.name?.en}
                                             </p>
                                         </div>
                                     ))}

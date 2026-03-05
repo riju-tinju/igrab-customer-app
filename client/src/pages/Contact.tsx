@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { IonContent, IonPage, IonToast } from '@ionic/react';
+import api from '../services/api';
 import Layout from '../components/common/Layout';
 import { useBranch } from '../contexts/BranchContext';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -38,7 +38,7 @@ const Contact: React.FC = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await axios.post('/api/contact/submit', {
+            const response = await api.post('/api/contact/submit', {
                 ...formData,
                 inquiryType: formData.inquiryType, // Use aligned field name
                 storeBranch: selectedBranch?._id // Use aligned field name
@@ -80,7 +80,7 @@ const Contact: React.FC = () => {
 
         setNewsletterLoading(true);
         try {
-            const response = await axios.post('/api/newsletter/subscribe', { email: newsletterEmail });
+            const response = await api.post('/api/newsletter/subscribe', { email: newsletterEmail });
             setToastMessage(language === 'ar' ? (response.data.userMessage ? t('newsletter_success') : t('newsletter_success')) : (response.data.userMessage || t('newsletter_success')));
             setShowToast(true);
             setNewsletterEmail('');
@@ -299,7 +299,7 @@ const Contact: React.FC = () => {
                         <h3 className={`text-2xl font-bold mb-6 text-primary font-chillax ${isRTL ? 'text-right' : 'text-left'}`}>{t('find_us')}</h3>
                         <div className="h-[400px] rounded-3xl overflow-hidden shadow-xl border-4 border-white">
                             <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.9663095343405!2d-74.00425384959301!3d40.74076104379132!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1629910735043!5m2!1sen!2sus"
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3606.979214719178!2d55.46998539999999!3d25.3049024!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5f6cbaa7b041%3A0xe482c641ba18ec78!2siGrab%20Story%20Cafe%20Sharjah!5e0!3m2!1sen!2sin!4v1772119734355!5m2!1sen!2sin"
                                 width="100%" height="100%" style={{ border: 0 }} allowFullScreen={true} loading="lazy"
                             ></iframe>
                         </div>
