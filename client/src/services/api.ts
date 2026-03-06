@@ -31,4 +31,15 @@ export const validateBrandsResponse = (data: any): any[] => {
     return [];
 };
 
+// Site content (SEO, Favicon, etc.)
+export const getSiteContent = async (): Promise<any> => {
+    try {
+        const response = await api.get('/api/site-content');
+        return response.data.data;
+    } catch (error) {
+        console.error('Error fetching site content:', error);
+        return null;
+    }
+};
+
 export default api;

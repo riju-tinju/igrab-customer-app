@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import api, { validateProductsResponse, validateCategoriesResponse } from '../services/api';
+import api, { validateProductsResponse, validateCategoriesResponse, getSiteContent } from '../services/api';
 import Layout from '../components/common/Layout';
 import HeroSlider from '../components/home/HeroSlider';
 import ProductCard from '../components/home/ProductCard';
 import FactsSection from '../components/home/FactsSection';
 import HowItWorks from '../components/home/HowItWorks';
 import Newsletter from '../components/home/Newsletter';
+import SEO from '../components/SEO';
 import { useBranch } from '../contexts/BranchContext';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -14,6 +15,7 @@ const Home: React.FC = () => {
   const history = useHistory();
   const [products, setProducts] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
+  const [siteContent, setSiteContent] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { selectedBranch } = useBranch();
@@ -92,13 +94,27 @@ const Home: React.FC = () => {
       setCategories(JSON.parse(cachedCats));
     }
 
+    const fetchSiteContent = async () => {
+      const content = await getSiteContent();
+      if (content) {
+        setSiteContent(content);
+      }
+    };
+
     fetchProducts();
     fetchCategories();
+    fetchSiteContent();
   }, [selectedBranch, fetchProducts, fetchCategories]);
 
   try {
     return (
       <Layout>
+        <SEO
+          title={siteContent?.homeTitle?.[language] || siteContent?.homeTitle?.en}
+          description={siteContent?.metaDescription?.[language] || siteContent?.metaDescription?.en}
+          keywords={siteContent?.metaKeywords?.[language] || siteContent?.metaKeywords?.en}
+          ogImage={siteContent?.ogImage ? `${import.meta.env.VITE_API_URL || ''}/uploads/others/${siteContent.ogImage}` : undefined}
+        />
         <div className="bg-muted min-h-screen">
           <HeroSlider />
 

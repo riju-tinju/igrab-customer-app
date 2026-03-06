@@ -11,6 +11,7 @@ import { useCart } from '../contexts/CartContext';
 import { useWishlist } from '../contexts/WishlistContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useBranch } from '../contexts/BranchContext';
+import SEO from '../components/SEO';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -136,6 +137,13 @@ const ProductDetails: React.FC = () => {
 
     return (
         <>
+            <SEO
+                title={product.name[language] || product.name.en}
+                description={product.description[language] || product.description.en}
+                ogImage={product.images?.[0] ?
+                    (product.images[0].startsWith('http') ? product.images[0] : `${import.meta.env.VITE_API_URL}/uploads/products/${product.images[0]}`)
+                    : undefined}
+            />
             <Layout
                 showHeader={false}
                 showFooter={false}

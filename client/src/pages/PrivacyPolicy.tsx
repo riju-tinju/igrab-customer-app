@@ -2,12 +2,17 @@ import React from 'react';
 import { } from '@ionic/react';
 import Layout from '../components/common/Layout';
 import { useLanguage } from '../contexts/LanguageContext';
+import SEO from '../components/SEO';
 
 const PrivacyPolicy: React.FC = () => {
     const { t, isRTL } = useLanguage();
 
     return (
         <Layout>
+            <SEO
+                title={t('privacy_title')}
+                description="Our privacy policy explains how we collect, use, and protect your personal information when you use iGrab."
+            />
             <div className={`bg-muted min-h-screen pb-20 px-4 lg:px-8 pt-24 lg:pt-28 ${isRTL ? 'rtl' : 'ltr'}`}>
                 <div className={`max-w-4xl mx-auto bg-white rounded-[2rem] p-8 lg:p-12 shadow-sm border border-gray-50 ${isRTL ? 'text-right' : 'text-left'}`}>
                     <span className="inline-block px-4 py-1.5 rounded-full bg-primary/5 text-primary text-[10px] font-bold uppercase tracking-[0.2em] mb-6">

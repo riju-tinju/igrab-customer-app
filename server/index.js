@@ -45,6 +45,7 @@ const storeBranchRoutes = require('./routes/storeBranchRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const newsletterRoutes = require('./routes/newsletterRoutes');
 const contactRoutes = require('./routes/contactRoutes');
+const siteContentRoutes = require('./routes/siteContentRoutes');
 
 app.use('/api/products', productRoutes);
 app.use('/api/categories', categoryRoutes);
@@ -54,6 +55,7 @@ app.use('/api/branches', storeBranchRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/site-content', siteContentRoutes);
 
 // Basic Route
 app.get('/', (req, res) => {

@@ -4,6 +4,7 @@ import api from '../services/api';
 import Layout from '../components/common/Layout';
 import { useBranch } from '../contexts/BranchContext';
 import { useLanguage } from '../contexts/LanguageContext';
+import SEO from '../components/SEO';
 
 const Contact: React.FC = () => {
     const { selectedBranch } = useBranch();
@@ -94,6 +95,10 @@ const Contact: React.FC = () => {
 
     return (
         <Layout>
+            <SEO
+                title={t('contact_page_title')}
+                description="Get in touch with iGrab Story Cafe. We're here to help with your orders, inquiries, or feedback."
+            />
             <div className="bg-muted min-h-screen pb-20 lg:pb-10 px-4 lg:px-8 pt-24 lg:pt-28">
                 {/* Page Title */}
                 <div className={`max-w-7xl mx-auto mb-8 ${isRTL ? 'text-right' : 'text-left'}`}>

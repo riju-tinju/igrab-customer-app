@@ -6,6 +6,7 @@ import Layout from '../components/common/Layout';
 import ProductCard from '../components/home/ProductCard';
 import { useBranch } from '../contexts/BranchContext';
 import { useLanguage } from '../contexts/LanguageContext';
+import SEO from '../components/SEO';
 
 const Shop: React.FC = () => {
     const { selectedBranch } = useBranch();
@@ -114,6 +115,10 @@ const Shop: React.FC = () => {
 
     return (
         <Layout>
+            <SEO
+                title={t('our_products')}
+                description="Explore our wide range of premium coffee, sweets, and snacks. Shop the best of iGrab."
+            />
             <div className="bg-muted min-h-screen">
                 {/* Page Title */}
                 <div className={`py-4 ${isRTL ? 'text-right' : 'text-left'}`}>
