@@ -23,7 +23,7 @@ const WishlistModal: React.FC<WishlistModalProps> = ({ isOpen, onClose }) => {
     if (!isOpen) return null;
 
     const getImageUrl = (image: string) =>
-        image?.startsWith('http') ? image : `${import.meta.env.VITE_API_URL}/${image?.startsWith('/') ? image.substring(1) : image}`;
+        image?.startsWith('http') ? image : `${import.meta.env.VITE_API_URL}/uploads/products/${image?.startsWith('/') ? image.substring(1) : image}`;
 
     const handleMoveAllToCart = () => {
         wishlistItems.forEach(item => {

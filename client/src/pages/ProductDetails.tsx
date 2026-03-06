@@ -257,7 +257,7 @@ const ProductDetails: React.FC = () => {
                             {product.images?.map((img: string, idx: number) => {
                                 const imageUrl = img.startsWith('http')
                                     ? img
-                                    : `${import.meta.env.VITE_API_URL}/${img.startsWith('/') ? img.substring(1) : img}`;
+                                    : `${import.meta.env.VITE_API_URL}/uploads/products/${img.startsWith('/') ? img.substring(1) : img}`;
                                 return (
                                     <SwiperSlide key={idx}>
                                         <img
@@ -302,7 +302,7 @@ const ProductDetails: React.FC = () => {
                                     <img
                                         src={product.brandId.logo.startsWith('http')
                                             ? product.brandId.logo
-                                            : `${import.meta.env.VITE_API_URL}/${product.brandId.logo.startsWith('/') ? product.brandId.logo.substring(1) : product.brandId.logo}`}
+                                            : `${import.meta.env.VITE_API_URL}/uploads/brands/${product.brandId.logo.startsWith('/') ? product.brandId.logo.substring(1) : product.brandId.logo}`}
                                         alt={product.brandId.name[language] || product.brandId.name.en}
                                         className="w-full h-full object-contain"
                                         onError={(e) => {

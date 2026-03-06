@@ -105,7 +105,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose }) => {
     };
 
     const getImageUrl = (image: string) =>
-        image?.startsWith('http') ? image : `${import.meta.env.VITE_API_URL}/${image?.startsWith('/') ? image.substring(1) : image}`;
+        image?.startsWith('http') ? image : `${import.meta.env.VITE_API_URL}/uploads/products/${image?.startsWith('/') ? image.substring(1) : image}`;
 
     return createPortal(
         <div
