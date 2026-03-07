@@ -10,6 +10,9 @@ dotenv.config();
 
 const app = express();
 
+// Trust reverse proxy (Nginx) for secure cookies in production
+app.set('trust proxy', 1);
+
 // Session configuration
 app.use(session({
     secret: process.env.SESSION_SECRET || 'igrab_default_secret_123',
@@ -22,7 +25,8 @@ app.use(session({
     cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production'
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
     }
 }));
 
