@@ -32,7 +32,7 @@ app.use(session({
 
 // Middleware
 app.use(cors({
-    origin: true, // Allow all origins for dev, or specify your React app URL
+    origin: process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : true,
     credentials: true
 }));
 app.use(express.json());
